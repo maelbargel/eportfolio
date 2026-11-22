@@ -14,4 +14,12 @@ Site statique (HTML / CSS / JavaScript), sans outil de build. Compatible GitHub 
 - Couleurs et polices : variables en haut de `css/style.css`.
 - Ajouter un projet ou une expérience : ajoute un bloc dans `items` (`type: "projet"` ou `type: "experience"`).
 - Images : place-les dans `img/` puis renseigne `img: "img/mon-image.jpg"` dans l'élément concerné.
-- Photo de profil, vidéo, CV : renseigne `photo`, `video`, `cvFr`, `cvEn` dans `cfg`.
+- Photo de profil, vidéos, CV : renseigne `photo`, `videoPitch`, `videoJp`, `cvFr`, `cvEn` dans `cfg`.
+- Description en puces : donne une liste (`["...", "..."]`) à `desc` ; un simple texte reste un paragraphe.
+
+## Statistiques du jeu Roblox (mises à jour automatiques)
+
+- `.github/workflows/roblox-stats.yml` lance toutes les heures `scripts/update-roblox-stats.mjs`, qui lit l'API publique de Roblox et écrit `data/roblox-stats.json`. Le site affiche ce fichier.
+- Lancer à la main : onglet Actions > « Mise à jour des statistiques Roblox » > Run workflow.
+- Changer de jeu : modifie `ROBLOX_PLACE_ID` dans `scripts/update-roblox-stats.mjs` (le nombre dans l'adresse de la page du jeu) et le lien dans `js/content.js`.
+- Si Roblox ne répond pas, le fichier n'est pas modifié et le site garde les dernières valeurs.

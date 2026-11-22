@@ -33,6 +33,8 @@ window.SITE = {
       menu: "Menu", theme: "Changer de thème", language: "Langue", nav: "Navigation principale",
       toAdd: "Lien à ajouter", copy: "© 2026 par Maël BARGEL",
       catPerso: "Projet personnel", catAcademique: "Projet académique",
+      statActive: "Joueurs actifs", statVisits: "Visites", statFavorites: "Favoris", statLikes: "J'aime", statUpdated: "Mis à jour le",
+      statsNote: "Statistiques Roblox, actualisées toutes les heures", statsAsOf: "relevé du", viewOnRoblox: "Voir le jeu sur Roblox ↗",
       /* Carte des mobilités */
       stateDone: "Fait", stateLive: "En cours", statePlan: "Projet / à venir",
       mapLabel: "Carte du monde des mobilités", mapHint: "Clique sur un point de la carte pour afficher la mobilité.",
@@ -60,6 +62,8 @@ window.SITE = {
       menu: "Menu", theme: "Toggle theme", language: "Language", nav: "Main navigation",
       toAdd: "Link to be added", copy: "© 2026 Maël BARGEL",
       catPerso: "Personal project", catAcademique: "Academic project",
+      statActive: "Active players", statVisits: "Visits", statFavorites: "Favorites", statLikes: "Likes", statUpdated: "Updated",
+      statsNote: "Roblox statistics, refreshed every hour", statsAsOf: "as of", viewOnRoblox: "View the game on Roblox ↗",
       stateDone: "Done", stateLive: "Ongoing", statePlan: "Planned",
       mapLabel: "World map of my mobility", mapHint: "Click a dot on the map to see the mobility.",
       mapTip: "Drag to move the map. Zoom: + / − buttons or Ctrl + scroll.",
@@ -122,12 +126,21 @@ window.SITE = {
   items: [
     {
       /* category : "perso" (projet personnel) ou "academique" (projet académique) */
-      type: "projet", art: "game", img: "img/roblox-jeu.png", fit: "wide", category: "perso",
+      type: "projet", art: "game", img: "img/roblox-jeu.jpg", fit: "wide", category: "perso",
+      /* Statistiques mises à jour toutes les heures par .github/workflows/roblox-stats.yml */
+      stats: { src: "data/roblox-stats.json", url: "https://www.roblox.com/games/131576522724952/Untitled-Slayer" },
       title:  { fr: "Développement d'un jeu Roblox", en: "Roblox game development" },
       role:   { fr: "Propriétaire", en: "Owner" },
       status: { fr: "Projet actif", en: "Active project" }, live: true,
-      desc:   { fr: "Développement et publication d'un jeu multijoueur RPG en monde ouvert sur Roblox (architecture client-serveur). Conception et implémentation des systèmes principaux et des interfaces utilisateurs (UI/UX) : combat, inventaire, dialogues, quêtes et économie. Gestion de projet et coordination de prestataires externes (animateurs, artistes VFX/SFX) avec gestion d'un budget alloué. Management d'une communauté de plus de 10 000 membres (recrutement et encadrement d'une équipe de modération, support et phases de test).",
-                en: "Development and release of an open-world multiplayer RPG on Roblox (client-server architecture). Design and implementation of the core systems and user interfaces (UI/UX): combat, inventory, dialogues, quests and economy. Project management and coordination of external contractors (animators, VFX/SFX artists) within an allocated budget. Management of a community of more than 10,000 members (recruiting and supervising a moderation team, support and testing phases)." },
+      /* Une liste ([...]) s'affiche en puces ; un simple texte ("...") s'affiche en paragraphe. */
+      desc:   { fr: ["Développement et publication d'un jeu multijoueur RPG en monde ouvert sur Roblox (architecture client-serveur).",
+                     "Conception et implémentation des systèmes principaux et des interfaces utilisateurs (UI/UX) : combat, inventaire, dialogues, quêtes et économie.",
+                     "Gestion de projet et coordination de prestataires externes (animateurs, artistes VFX/SFX) avec gestion d'un budget alloué.",
+                     "Management d'une communauté de plus de 10 000 membres (recrutement et encadrement d'une équipe de modération, support et phases de test)."],
+                en: ["Development and release of an open-world multiplayer RPG on Roblox (client-server architecture).",
+                     "Design and implementation of the core systems and user interfaces (UI/UX): combat, inventory, dialogues, quests and economy.",
+                     "Project management and coordination of external contractors (animators, VFX/SFX artists) within an allocated budget.",
+                     "Management of a community of more than 10,000 members (recruiting and supervising a moderation team, support and testing phases)."] },
       tags:   { fr: ["Roblox", "Luau", "Client-serveur", "UI/UX", "Gestion de projet", "Community management"], en: ["Roblox", "Luau", "Client-server", "UI/UX", "Project management", "Community management"] }
     }
   ],

@@ -98,6 +98,48 @@
       '</dl></div><p class="copy">' + esc(u.copy) + '</p></div></footer>';
   }
 
+  /* Description : liste à puces si c'est un tableau, sinon paragraphe */
+  function descHtml(v) {
+    if (Array.isArray(v)) return '<ul class="bullets">' + v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    return '<p class="desc">' + esc(v) + '</p>';
+  }
+
+  /* Statistiques du jeu (fichier data/roblox-stats.json mis à jour par GitHub Actions) */
+  var statsCache = {};
+  function fmtNum(n, compact) {
+    if (n == null) return '—';
+    try { return new Intl.NumberFormat(lang, compact ? { notation: 'compact', maximumFractionDigits: 1 } : {}).format(n); } catch (e) { return String(n); }
+  }
+  function fmtDate(s, withTime) {
+    if (!s) return '—';
+    try { return new Intl.DateTimeFormat(lang, withTime ? { dateStyle: 'medium', timeStyle: 'short' } : { dateStyle: 'medium' }).format(new Date(s)); } catch (e) { return String(s); }
+  }
+  function statsBlock(d) {
+    var u = ui(), s = statsCache[d.stats.src] || {};
+    var cells = [
+      ['statActive', fmtNum(s.playing), 'live'], ['statVisits', fmtNum(s.visits, true), ''], ['statFavorites', fmtNum(s.favorites), ''],
+      ['statLikes', fmtNum(s.likes), ''], ['statUpdated', fmtDate(s.gameUpdated), '']
+    ];
+    return '<div class="item-stats" data-stats="' + esc(d.stats.src) + '"><dl class="stats">' +
+      cells.map(function (c) { return '<div' + (c[2] ? ' class="' + c[2] + '"' : '') + '><dt>' + esc(u[c[0]]) + '</dt><dd>' + esc(c[1]) + '</dd></div>'; }).join('') +
+      '</dl><p class="stats-note">' + esc(u.statsNote) + (s.fetchedAt ? ' · ' + esc(u.statsAsOf) + ' ' + esc(fmtDate(s.fetchedAt, true)) : '') +
+      (d.stats.url ? ' · <a href="' + esc(d.stats.url) + '" target="_blank" rel="noopener">' + esc(u.viewOnRoblox) + '</a>' : '') + '</p></div>';
+  }
+  function loadStats() {
+    S.items.forEach(function (d) {
+      if (!d.stats || statsCache[d.stats.src] || !window.fetch) return;
+      fetch(d.stats.src + '?t=' + Math.floor(Date.now() / 600000))
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function (j) {
+          statsCache[d.stats.src] = j;
+          [].slice.call(document.querySelectorAll('[data-stats]')).forEach(function (el) {
+            if (el.getAttribute('data-stats') === d.stats.src) el.outerHTML = statsBlock(d);
+          });
+        })
+        .catch(function () { /* fichier absent (ex. ouverture locale) : on garde les tirets */ });
+    });
+  }
+
   function card(d, i, kind) {
     var u = ui();
     var state = d.state ? '<span class="badge st-' + d.state + '">' + esc(u['state' + d.state.charAt(0).toUpperCase() + d.state.slice(1)]) + '</span>' : '';
@@ -113,9 +155,9 @@
     return '<article class="item' + (i % 2 ? ' flip' : '') + '"><div class="item-body">' +
       (eyebrow ? '<div class="eyebrow">' + eyebrow + '</div>' : '') +
       '<h3>' + esc(t(d.title)) + '</h3>' + (d.role ? '<p class="role">' + esc(t(d.role)) + '</p>' : '') +
-      '<p class="desc">' + esc(t(d.desc)) + '</p>' +
+      descHtml(t(d.desc)) +
       (tags.length ? '<ul class="tags">' + tags.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') +
-      more + '</div><div class="item-media' + mcls + '"' + mstyle + '>' + media + '</div></article>';
+      more + '</div><div class="item-media' + mcls + '"' + mstyle + '>' + media + '</div>' + (d.stats ? statsBlock(d) : '') + '</article>';
   }
   function simpleList(arr) { return '<div class="stack">' + arr.map(function (d, i) { return card(d, i); }).join('') + '</div>'; }
 
@@ -256,6 +298,7 @@
     mapApi = null;
     app.innerHTML = header() + '<main>' + (p.id === 'home' ? home() : inner(p)) + '</main>' + footer();
     if (p.id === 'mobilites') mountMap();
+    if (p.id === 'projets') loadStats();
   }
 
   app.addEventListener('click', function (e) {
