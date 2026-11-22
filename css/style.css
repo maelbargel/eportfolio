@@ -260,6 +260,9 @@ footer { margin-top: 96px; padding-top: 40px; padding-bottom: calc(40px + env(sa
   content: ""; position: absolute; inset: -24px; background: var(--img) center / cover no-repeat;
   filter: blur(22px) saturate(1.15); transform: scale(1.1);
 }
+.item-media.contain.wide { min-height: 260px; }
+.item-media.contain.wide img { padding: 12px; }
+.badge.cat { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 .item-media.paper { background: #fff; min-height: 320px; }
 .item-media.paper::before, .item-media.paper::after { display: none; }
 .item-media.paper img { object-fit: contain; padding: 18px; }

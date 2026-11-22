@@ -103,11 +103,12 @@
     var state = d.state ? '<span class="badge st-' + d.state + '">' + esc(u['state' + d.state.charAt(0).toUpperCase() + d.state.slice(1)]) + '</span>' : '';
     var eyebrow = (kind ? '<span>' + esc(kind) + '</span>' : (d.eyebrow ? '<span>' + esc(t(d.eyebrow)) + '</span>' : '')) +
       (d.status ? '<span class="badge' + (d.live ? ' live' : '') + '">' + esc(t(d.status)) + '</span>' : '') + state +
+      (d.category ? '<span class="badge cat">' + esc(u['cat' + d.category.charAt(0).toUpperCase() + d.category.slice(1)]) + '</span>' : '') +
       (d.placeholder ? '<span class="badge todo">' + esc(u.placeholder) + '</span>' : '');
     var tags = t(d.tags) || [];
     var more = ('more' in d) ? '<a class="more"' + (d.more ? ' href="' + esc(d.more) + '" target="_blank" rel="noopener"' : ' aria-disabled="true" title="' + esc(u.toAdd) + '"') + '>' + esc(u.discover) + '</a>' : '';
     var media = d.img ? '<img src="' + esc(d.img) + '" alt="' + esc(t(d.title)) + '" loading="lazy">' : art(d.art);
-    var mcls = d.img ? ' has-img' + (d.fit === 'contain' ? ' contain' : '') + (d.fit === 'paper' ? ' paper' : '') : '';
+    var mcls = d.img ? ' has-img' + (d.fit === 'contain' || d.fit === 'wide' ? ' contain' : '') + (d.fit === 'wide' ? ' wide' : '') + (d.fit === 'paper' ? ' paper' : '') : '';
     var mstyle = d.img ? ' style="--img:url(\'' + esc(d.img) + '\')"' : '';
     return '<article class="item' + (i % 2 ? ' flip' : '') + '"><div class="item-body">' +
       (eyebrow ? '<div class="eyebrow">' + eyebrow + '</div>' : '') +
